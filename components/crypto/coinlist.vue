@@ -9,7 +9,7 @@
     border: 1px solid rgba(209, 213, 219, 0.3);
   "
   outlined
-  class="pa-10 elevation-2"
+  class="pa-10"
   >
     <v-card-title>
       <v-icon class="mr-1">
@@ -74,7 +74,7 @@
   </v-card>
 
 
-  <v-dialog
+  <!-- <v-dialog
         transition="dialog-top-transition"
         max-width="900"
         v-model="active"
@@ -94,18 +94,20 @@
               >Close</v-btn>
             </v-card-actions>
           </v-card>
-      </v-dialog>
+      </v-dialog> -->
+    <Moreinfo :active.sync="active" v-on:emitEvent="close($event)"/>
   </div>
 </template>
 
 
 
 <script>
-
+  import Moreinfo from '~/components/crypto/view_coin.vue'
   import LineChart from '~/components/LineChart.vue';
   export default {
     components:{
-      LineChart
+      LineChart,
+      Moreinfo
     },
     data () {
       return {
@@ -133,11 +135,7 @@
         coins: []
       }
     },
-    watch: {
-      active (val) {
-        val || this.close()
-      },
-    },
+    
     methods: {
       async list_of_coins () { 
         const send = await this.$axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=500&page=1&sparkline=false");
@@ -149,11 +147,12 @@
       },
 
       show (id){
-        
-        this.create_chart(id.id)
-        this.componentKey += 1;
-        this.active = true
-        console.log(this.componentKey)
+        this.$router.push('/crypto/preview/'+id.id)
+        // this.create_chart(id.id)
+        // this.componentKey += 1;
+        // this.active = true
+        // console.log(this.active)
+        // console.log(this.componentKey)
       },
 
       async create_chart (chart){
@@ -168,9 +167,8 @@
         }
       },
 
-      close () {
-        this.active = false
-        this.chart = []
+      close (fuck) {
+        this.active = fuck
       },
 
     },

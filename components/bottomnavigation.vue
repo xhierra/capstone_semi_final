@@ -3,10 +3,6 @@
         <v-bottom-navigation
         app
         shift
-        style="
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        "
         >
             <v-btn
             text

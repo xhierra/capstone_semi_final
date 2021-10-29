@@ -7,7 +7,12 @@
 
     ></v-skeleton-loader>
     <v-card
-      color="transparent"
+      style="
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        border-radius: 12px;
+        border: 1px solid rgba(209, 213, 219, 0.3);
+      "
       outlined
       class="mx-auto"
       v-if="crypto.length != 0"

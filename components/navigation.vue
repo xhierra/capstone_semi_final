@@ -51,9 +51,9 @@
 
                         <v-card-text>
                             <v-icon small>mdi-ethereum</v-icon>
-                            <span v-if="ETHBalance != undefined">{{ETHBalance}}</span>
+                            <span v-if="balance != undefined">{{balance}}</span>
                             <v-progress-circular
-                                v-if="ETHBalance == undefined"
+                                v-if="balance == undefined"
                                 indeterminate
                                 :size="15"
                                 color="primary"
@@ -61,35 +61,32 @@
                         </v-card-text>
                     </v-card>
 
+                    <v-container>
+                    <v-list>
+                        <v-list-item @click="buy_crypto()">  
+                        <v-list-item-action>
+                            <v-icon>mdi-bitcoin</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>Buy</v-list-item-title>
+                        </v-list-item-content>
+                        </v-list-item>
 
+                        <v-list-item @click="swap_dialog = true">
+                        <v-list-item-action>
+                            <v-icon>mdi-swap-horizontal</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>Swap</v-list-item-title>
+                        </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-container>
                    
 
                 </v-card-text>
             </v-card>
         </v-container>
-
-
-        <!-- <v-container>
-            <v-list rounded>
-                <v-list-item @click="ronindialog = true"> 
-                <v-list-item-action>
-                    <v-icon>mdi-wallet-outline</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                    <v-list-item-title>Accoun Wallet</v-list-item-title>
-                </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item @click="logout_metamask()">
-                <v-list-item-action>
-                    <v-icon>mdi-logout</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                    <v-list-item-title>Logout</v-list-item-title>
-                </v-list-item-content>
-                </v-list-item>
-            </v-list>
-        </v-container> -->
     </v-navigation-drawer>
 
     <v-app-bar
@@ -97,10 +94,11 @@
         fixed
         app
         flat
-        class="elevation-1"
         style="
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
+        border: 1px solid rgba(209, 213, 219, 0.3)
+        
         "
         v-if="width_demension >= 1024"
     >
@@ -116,11 +114,6 @@
             class="mt-7"
         ></v-text-field>
 
-        
-
-        
-        
-            
             <v-tabs
             color="primary"
             icons-and-text
@@ -139,7 +132,6 @@
                     </v-tab-item>
                 </v-tabs-items>
             </v-tabs>
-
 
 
         <v-menu offset-y>
@@ -182,9 +174,9 @@
         </v-menu>
         
 
-        <v-icon class="mx-1" v-if="user.length != 0" @click.stop="drawer = !drawer">
-            mdi-message-processing-outline
-        </v-icon>
+        <v-btn icon class="mx-1" v-if="user.length != 0" to="/message">
+            <v-icon>mdi-message-processing-outline</v-icon>
+        </v-btn>
 
         <v-icon class="mx-1" v-if="user.length != 0" @click.stop="drawer = !drawer">
             mdi-bell-outline
@@ -194,6 +186,11 @@
         <v-icon class="mx-1" v-if="user.length != 0" @click.stop="drawer = !drawer">
             mdi-wallet-outline
         </v-icon>
+
+
+        <v-btn icon class="mx-1" v-if="user.length != 0" to="/item/create">
+            <v-icon>mdi-plus</v-icon>
+        </v-btn>
 
         <v-btn
         depressed
@@ -213,10 +210,10 @@
         fixed
         app
         flat
-        class="elevation-1"
         style="
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
+        border: 1px solid rgba(209, 213, 219, 0.3)
         "
     >        
     <v-app-bar-nav-icon></v-app-bar-nav-icon>
@@ -235,7 +232,7 @@
             mdi-bell-outline
         </v-icon>
 
-        <v-icon class="mx-1" v-if="user.length != 0" @click.stop="drawer = !drawer">
+        <v-icon class="mx-1" v-if="user.length != 0" to="/message">
             mdi-message-processing-outline
         </v-icon>
 
@@ -247,27 +244,31 @@
 
 
 
-   
+    <Swap :dialog="swap_dialog" v-on:emitEvent="swap_emit($event)"/>
     </div>
 </template>
 
 <script>
     import { mapState,mapMutations } from 'vuex'
     import Moralis from 'moralis'
-
+    import Swap from '~/components/crypto/swap.vue'
     export default {
         props: {
             width_demension : 0
         },
+        components:{
+            Swap
+        },
         computed:{
             ...mapState(['user','ETHBalance','userETH']),
             isNotIndex : function (){
-                return $nuxt.$route.name != 'index' ? false : true
+                return $nuxt.$route.name == 'index' || $nuxt.$route.name == 'message'  ? true : false
             }
         },
 
         data () {
             return {
+            swap_dialog: false,
             balance: undefined,
             activeTab: '',
             routes: [
@@ -335,8 +336,35 @@
             }
         },
         methods: {
+
+            swap_emit : function (val) {
+                return this.swap_dialog = val
+            },
+
             updateRouter(val){
                 this.$router.push(val)
+            },
+
+            async buy_crypto () {
+                await Moralis.initPlugins();
+                await Moralis.enable();
+                Moralis.Plugins.fiat.buy()
+            },
+
+
+            async load_eth_balance(){
+                
+                
+                const web3 = await Moralis.enable();
+                const balances = await Moralis.Web3API.account.getNativeBalance(
+                    {
+                        chain: 'ropsten'
+                    }
+                );
+
+                let currentBalance = web3.utils.fromWei(balances.balance, 'ether')
+
+                this.balance = parseFloat(currentBalance).toFixed(4);
             },
 
 
@@ -347,8 +375,9 @@
                 this.$router.push('/')
             }
         },
+        
         mounted () { 
-            console.log(this.width_demension)
+            this.load_eth_balance()
         }
     }
 </script>

@@ -63,8 +63,6 @@ export const actions = {
            let cart = currentUser.attributes.cart == undefined ? [] : currentUser.attributes.cart;
            commit('set_cart', cart)
         }
-
-        console.log(currentUser)
     },
 
 

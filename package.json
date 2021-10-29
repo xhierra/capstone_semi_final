@@ -1,5 +1,5 @@
 {
-  "name": "axie",
+  "name": "Capstone",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -11,22 +11,25 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
     "@polygon.io/client-js": "^2.1.3",
-    "@walletconnect/web3-provider": "^1.6.5",
+    "@walletconnect/web3-provider": "^1.6.6",
     "chart.js": "^2.9.4",
     "core-js": "^3.18.0",
     "debounce": "^1.2.1",
     "ethers": "^5.4.7",
     "fs": "^0.0.1-security",
     "hchs-vue-charts": "^1.2.8",
+    "lamejs": "^1.2.0",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "moment": "^2.29.1",
-    "moralis": "0.0.54",
+    "moralis": "0.0.90",
     "net": "^1.0.2",
     "nomics": "github:mikunimaru/nomics",
     "nuxt": "^2.15.8",
     "request-promise": "^4.2.6",
     "tls": "^0.0.1",
+    "v-uploader": "^1.8.0",
+    "vue-advanced-chat": "https://github.com/antoine92190/vue-advanced-chat/tarball/next",
     "vue-chartjs": "^3.5.1",
     "vue-metamask": "^2.0.3",
     "vue-mobile-detection": "^1.0.0",
@@ -36,6 +39,7 @@
     "web3": "^0.19.1"
   },
   "devDependencies": {
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/vuetify": "^1.12.1"
   }
 }

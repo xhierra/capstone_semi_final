@@ -1,38 +1,62 @@
 <template>
     <v-dialog
         transition="dialog-top-transition"
+        persistent
         max-width="600"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="primary"
-            v-bind="attrs"
-            v-on="on"
-          >From the top</v-btn>
-        </template>
-        <template v-slot:default="dialog">
+        v-model="active">
           <v-card>
             <v-toolbar
               color="primary"
               dark
             >Opening from the top</v-toolbar>
             <v-card-text>
-              <div class="text-h2 pa-12">Hello world!</div>
+              <LineChart :datas="chart" />
+              {{chart}}
             </v-card-text>
             <v-card-actions class="justify-end">
               <v-btn
                 text
-                @click="dialog.value = false"
+                @click="emitEvent()"
               >Close</v-btn>
             </v-card-actions>
           </v-card>
-        </template>
       </v-dialog>
 </template>
 
 <script>
+    import LineChart from '~/components/LineChart.vue';
     export default {
-        
+        components:{
+          LineChart
+        },
+        props:{
+          active:{
+            type: Boolean,
+          },
+          chart:{
+            type: Array
+          }
+        },
+        data() {
+          return {
+            dialog: false
+          }
+        },
+        watch: {
+          active (val) {
+            val || this.emitEvent()
+          },
+        },
+        methods: {
+          emitEvent: function () {
+            this.$emit('emitEvent',this.dialog);
+          },
+        },
+        computed : {
+          check_val : function (){
+            return this.active == true ? true : false
+          }
+        },
     }
 </script>
 

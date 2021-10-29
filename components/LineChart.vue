@@ -67,6 +67,14 @@
               
             }
           },
+          plotOptions: {
+            series: {
+              animation: false,
+              dataLabels: {
+                enabled: false
+              }
+            }
+          },
         },
     }),
     mounted(){

@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+require ('dotenv').config();
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -25,6 +26,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/Moralis.client.js',
+    '~/plugins/uploader.client.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -39,7 +41,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    '@nuxtjs/dotenv',
   ],
 
   axios: {
@@ -52,6 +55,7 @@ export default {
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
     theme: {
       dark: false,
       themes: {
