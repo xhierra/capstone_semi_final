@@ -12,19 +12,21 @@
     
     </v-layout>
 
-
+  <TheSnackbar />
   </v-app>
 </template>
 
 <script>
- import Moralis from 'moralis'
+import Moralis from 'moralis'
 import NavigationBar from '~/components/navigation.vue'
 import BottomNavigationBar from '~/components/bottomnavigation.vue'
 import { mapActions,mapState,mapMutations } from 'vuex'
+import TheSnackbar from '@/components/TheSnackbar.vue';
 export default {
   components:{
     NavigationBar,
-    BottomNavigationBar
+    BottomNavigationBar,
+    TheSnackbar
   },
   data () {
       return {

@@ -37,7 +37,7 @@
 
             <v-file-input
             accept="image/*"
-            label="Preview Image"
+            label="Upload Preview Image"
             hint="provide an image (PNG, JPG, or GIF) for the card display of your item."
             show-size
             @change="Preview_image"

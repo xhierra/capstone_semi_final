@@ -216,7 +216,11 @@
         border: 1px solid rgba(209, 213, 219, 0.3)
         "
     >        
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+    <v-app-bar-nav-icon
+    v-if="user.length != 0" 
+    @click.stop="drawer = !drawer"
+    ></v-app-bar-nav-icon>
 
     <v-spacer>
         <v-text-field
@@ -228,13 +232,22 @@
         ></v-text-field>
     </v-spacer>
 
-        <v-icon class="mx-1" v-if="user.length != 0" @click.stop="drawer = !drawer">
+        <v-icon class="mx-1">
             mdi-bell-outline
         </v-icon>
 
-        <v-icon class="mx-1" v-if="user.length != 0" to="/message">
+
+        <v-btn 
+        icon
+        v-if="user.length != 0"
+        to="/message">
+
+        
+        <v-icon class="mx-1">
             mdi-message-processing-outline
         </v-icon>
+
+        </v-btn>
 
         
 

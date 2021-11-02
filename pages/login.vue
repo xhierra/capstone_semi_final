@@ -26,7 +26,7 @@
                 x-large
                 block
                 color="primary"
-                :loading="authorize"
+                :loading="authorize_metamask"
                 rounded
                 style="text-transform: none;"
                 @click="loginMetamask()"
@@ -55,7 +55,7 @@
                 x-large
                 block
                 color="red"
-                :loading="authorize"
+                :loading="authorize_walletConnect"
                 rounded
                 style="text-transform: none;"
                 @click="loginWalletConnect()"
@@ -131,7 +131,8 @@
         layout: 'newuser',
         middleware: 'is_loggedin',
         data: () => ({
-        authorize: false,
+        authorize_metamask: false,
+        authorize_walletConnect: false,
         metamask: 'Login with MetaMask',
         walletconnect : 'Login with Wallet Connect',
         walleterror: false,
@@ -142,14 +143,14 @@
             async loginMetamask (){
                 if(window.ethereum){
 
-                    this.authorize = true;
+                    this.authorize_metamask = true;
                     try{
 
                       
                         let global = this;
                         Moralis.authenticate().then(function (user) {
                             global.set_User(user);
-                            global.authorize = false;
+                            global.authorize_metamask = false;
                             global.loggedin();
                             global.$router.push('/')
                         }).catch (function (error){
@@ -157,7 +158,7 @@
                         })
 
                     }catch{
-                        this.authorize = false;
+                        this.authorize_metamask = false;
                     }
                 }else{
                     this.message = "Please install MetaMask first";
@@ -168,7 +169,7 @@
             async loginWalletConnect (){
                 if(window.ethereum){
 
-                    this.authorize = true;
+                    this.authorize_walletConnect = true;
                     try{
 
                       
@@ -187,13 +188,13 @@
 
                         if(user){
                             this.set_User(user);
-                            this.authorize = false;
+                            this.authorize_walletConnect = false;
                             this.loggedin();
                             this.$router.push('/')
                         }
 
                     }catch{
-                        this.authorize = false;
+                        this.authorize_walletConnect = false;
                     }
                 }else{
                     this.message = "Please install MetaMask first";

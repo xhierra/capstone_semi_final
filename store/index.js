@@ -1,3 +1,4 @@
+export const strict = false;
 
 import Moralis from 'moralis';
 import _ from 'lodash';

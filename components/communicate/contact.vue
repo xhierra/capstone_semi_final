@@ -64,6 +64,7 @@
 
         <v-card
             class="mb-2 card"
+            width="800"
             outlined
             v-if="windowSize.x <= 1024"
         >

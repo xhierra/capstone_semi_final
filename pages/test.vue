@@ -1,24 +1,19 @@
 <template>
     <div>
-        test
+        <Snack
+        :text="'Login'"
+        :icon="'mdi-check-decagram'"
+        :color="'warning'"
+        />
     </div>
 </template>
 
 <script>
-    import Moralis from 'moralis'
+    import Snack from '~/components/snackbar.vue'
     export default {
-        methods: {
-            async init() {
-                const params = { theURL: "Testing" }
-                const response = await Moralis.Cloud.run("chatrooms",params);
-                console.log(response)
-            },
-            
-            
-        },
-        mounted() {
-        this.init()
-        },
+        components:{
+            Snack
+        }
     }
 </script>
 

@@ -15,7 +15,7 @@
 
                 <v-btn
                 text
-                @click="dialog = false"
+                @click="emitEvent(false)"
                 >
                 <v-icon>mdi-close</v-icon>
                 </v-btn>
@@ -55,14 +55,12 @@ export default {
   },
   watch: {
     dialog (v) {
-      if(!v){
-        this.emitEvent()
-      }
+        this.emitEvent(v)
     },
   },
   methods: {
-    emitEvent: function () {
-      this.$emit('emitEvent',false);
+    emitEvent: function (v) {
+      this.$emit('emitEvent',v);
     }
   },
 }
