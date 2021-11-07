@@ -12,7 +12,7 @@
           md="4"
         >
             <v-card
-              :to="'/item/create/'+item.id"
+              :to="'/item/hold/'+item.id"
             >
                 <v-img
                     :src="item.attributes.previewimg._url"

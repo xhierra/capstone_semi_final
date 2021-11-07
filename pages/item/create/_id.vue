@@ -146,7 +146,7 @@
 
                 const Item = Moralis.Object.extend("Item");
                 const query = new Moralis.Query(Item);
-                query.equalTo("objectId", this.$route.id);
+                query.equalTo("objectId", this.$route.params.id);
                 query.find().then((Items) => {  
                     console.log(Items)
                 }, (error) => {
@@ -235,8 +235,7 @@
         },
 
         mounted() {
-            console.log(this.$route.id);
-            // this.init();
+            this.init();
         },
     }
 </script>
