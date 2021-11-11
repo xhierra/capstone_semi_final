@@ -177,7 +177,7 @@
         },
 
         watch: {
-          chatRoomID (val) {
+          chatRoomID () {
               this.getMessages()
           },
         },

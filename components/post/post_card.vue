@@ -1,8 +1,8 @@
 <template>
     <div>
-        <v-row justify="space-around">
+        <v-row justify="space-around" v-if="isloading">
         <v-card
-        width="800"
+        width="900"
         v-for="(posts,key) in post"
         :key="key"
         outlined
@@ -13,20 +13,20 @@
                 size="40"
                 >
                     <img
-                        :src="posts.attributes.postedby.attributes.profilepic.url"
+                        :src="posts.attributes.postedby.attributes.profilepic._url"
                         alt="John"
                     >
                 </v-avatar>
-                <span class="ml-2">{{posts.attributes.postedby.attributes.profilepic.url}}</span>
+                <span class="ml-2">{{posts.attributes.postedby.attributes.username}}</span>
                 <v-spacer/>
             
             </v-card-title>
 
             <v-card-subtitle>
-                {{posts.createdAt}}
+                <small>{{posts.createdAt}}</small>
             </v-card-subtitle>
 
-            <v-card-text class="px-5">
+            <v-card-text class="px-5" style="height:auto;white-space: pre">
                 {{posts.attributes.description}}
             </v-card-text>
             <v-card-actions>
@@ -46,21 +46,27 @@
             </v-card-actions>
         </v-card>
         </v-row>
+        <Preload v-if="!isloading"/>
     </div>
 </template>
 
 <script>
     import Moralis from 'moralis'
+    import Preload from '~/components/post/skelleton_loading.vue'
     export default {
+        components:{
+            Preload
+        },
         data() {
             return {
-                post: []
+                post: [],
+                isloading: false,
             }
         },
 
         methods: {
             async fetch_post () {
-                
+                this.isloading = false;
                 const Post = Moralis.Object.extend("Post");
                 const Images = Moralis.Object.extend("PostImages");
 
@@ -79,6 +85,7 @@
                 this.post = PostList;
                 console.log(this.post)
                 console.log(PostImages)
+                this.isloading = true;
             }
         },
 

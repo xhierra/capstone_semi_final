@@ -4,7 +4,7 @@
         app
         clipped
         >
-            Yawa
+            TESTING
         </v-navigation-drawer>
 
     </div>

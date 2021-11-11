@@ -10,6 +10,7 @@ export const state = () => ({
     
   export const actions = {
     setSnackbar({commit}, snackbar) {
+      snackbar.icon = snackbar.icon || "mdi-bullhorn";
       snackbar.showing = true;
       snackbar.color = snackbar.color || 'success';
       commit('SET_SNACKBAR', snackbar);

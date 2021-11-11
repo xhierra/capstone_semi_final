@@ -4,20 +4,23 @@
       width="500"
     >
       <template v-slot:activator="{ on, attrs }">
+
         <v-btn
+          fixed
           color="primary"
           rounded
+          fab
           depressed
           v-bind="attrs"
           v-on="on"
           class="mt-3"
           style="text-transform:none;"
         >
-        <v-icon class="mr-1">
-            mdi-post
+        <v-icon>
+            mdi-plus
         </v-icon>
-        Create Post
         </v-btn>
+
       </template>
 
       <v-card>

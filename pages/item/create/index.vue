@@ -184,11 +184,13 @@
                             await ItemCollection.save()
                             .then((stat) => {
                                 this.$store.dispatch('snackbar/setSnackbar', {
+                                    icon: 'mdi-check-outline',
                                     text : 'File Uploaded with an id of ' + stat.id ,
                                     color : 'primary'
                                 });
                             }, (error) => {
                                 this.$store.dispatch('snackbar/setSnackbar', {
+                                    icon: 'mdi-file-remove',
                                     text :  error.message,
                                     color : 'error'
                                 });

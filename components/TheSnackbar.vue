@@ -11,10 +11,21 @@
       right
       rounded="pill"
     >
+      <v-icon
+      medium
+      class="mr-2"
+      >
+        {{snackbar.icon}}
+      </v-icon>
       {{snackbar.text}}
-
-      <v-btn text @click="snackbar.showing = false">
-        Close
+      <v-btn
+      icon
+      x-small
+      class="float-right"
+      @click="snackbar.showing = false">
+        <v-icon>
+          mdi-close-thick
+        </v-icon>
       </v-btn>
     </v-snackbar>
   </div>

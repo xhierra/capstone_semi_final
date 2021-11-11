@@ -23,7 +23,7 @@
         
         
 
-            <Navs/>
+            <Navs />
 
             <CreatePost/>
 

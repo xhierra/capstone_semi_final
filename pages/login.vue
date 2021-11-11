@@ -100,26 +100,7 @@
         </div>
 
 
-        <v-snackbar
-        v-model="walleterror"
-        :timeout="2000"
-        dark
-        color="deep-purple accent-4"
-        >
-        <v-icon class="mr-2">mdi-robot</v-icon>
-        {{ message }}
 
-        <template v-slot:action="{ attrs }">
-            <v-btn
-            color="cyan accent-3"
-            text
-            v-bind="attrs"
-            @click="walleterror = false"
-            >
-            Close
-            </v-btn>
-        </template>
-        </v-snackbar>
 
     </div>
 </template>
@@ -134,9 +115,7 @@
         authorize_metamask: false,
         authorize_walletConnect: false,
         metamask: 'Login with MetaMask',
-        walletconnect : 'Login with Wallet Connect',
-        walleterror: false,
-        message: ''
+        walletconnect : 'Login with Wallet Connect'
         }),
         methods:{
             ...mapActions(['loggedin']),
@@ -154,15 +133,25 @@
                             global.loggedin();
                             global.$router.push('/')
                         }).catch (function (error){
-                            alert(error.message)
+
+                            global.$store.dispatch('snackbar/setSnackbar', {
+                                text :  error.message,
+                                color : 'error',
+                                icon: 'mdi-alert-circle-outline'
+                            });
+
+                            global.authorize_metamask = false;
                         })
 
                     }catch{
                         this.authorize_metamask = false;
                     }
                 }else{
-                    this.message = "Please install MetaMask first";
-                    this.walleterror = true;
+                    this.$store.dispatch('snackbar/setSnackbar', {
+                        text :  "MetaMask not found please install",
+                        color : 'purple',
+                        icon: 'mdi-download-off'
+                    });
                 }
             },
 
@@ -191,14 +180,23 @@
                             this.authorize_walletConnect = false;
                             this.loggedin();
                             this.$router.push('/')
+                        }else{
+                            this.$store.dispatch('snackbar/setSnackbar', {
+                                text :  "Failed to Login",
+                                color : 'error',
+                                icon: 'mdi-alert-circle-outline'
+                            });
                         }
 
                     }catch{
                         this.authorize_walletConnect = false;
                     }
                 }else{
-                    this.message = "Please install MetaMask first";
-                    this.walleterror = true;
+                    this.$store.dispatch('snackbar/setSnackbar', {
+                        text :  "WalletConnect not found please install",
+                        color : 'warning',
+                        icon: 'mdi-download-off'
+                    });
                 }
             },
 
