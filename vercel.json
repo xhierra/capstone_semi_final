@@ -3,10 +3,13 @@
   "builds": [
     {
       "src": "nuxt.config.js",
-      "use": "@nuxtjs/vercel-builder",
+      "use": "@nuxtjs/vercel-builder@0.18.1",
       "config": {
-        "serverFiles": ["server-middleware/**"],
-        "generateStaticRoutes": true
+        "serverFiles": [
+          "package.json",
+          "util/seo.js",
+          "./.nuxt/dist/sitemap-routes.json"
+        ]
       }
     }
   ]
