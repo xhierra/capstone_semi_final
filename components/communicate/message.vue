@@ -16,6 +16,16 @@
                       v-text="chatRoomID.attributes.title.slice(0, 1).toUpperCase()"
                     ></v-avatar>
                     {{chatRoomID.attributes.title}}
+
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                    icon
+                    >
+                      <v-icon>
+                        mdi-dots-vertical
+                      </v-icon>
+                    </v-btn>
                   </v-card-title>
                   <v-divider/>
 
@@ -29,10 +39,20 @@
                       >
                         <v-menu 
                         max-width="100px"
+                        content-class="elevation-1"
                         :close-on-content-click="false"
                         :nudge-width="100"
                         offset-a>
                           <template v-slot:activator="{ on, attrs }">
+
+                              <v-avatar
+                                  size="30"
+                                  class="ma-2"
+                              >
+                                  <img
+                                      src="https://pbs.twimg.com/profile_images/1340887235638472705/_3xCLDt0_400x400.jpg"
+                                  >
+                              </v-avatar>
 
                               <v-chip
                                 v-bind="attrs"
@@ -54,7 +74,7 @@
                               </v-chip>
                             
                           </template>
-                          <v-list>
+                          <v-list rounded>
                             <v-list-item @click="copyToClipBoard(msg.attributes.message)">
                               <v-list-item-title>Copy</v-list-item-title>
                             </v-list-item>

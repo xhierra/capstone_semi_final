@@ -3,10 +3,10 @@
       v-model="show"
       width="700"
     >
-
+      
       <v-card>
         <v-card-title>
-          Create Post
+          Update Post
           <v-spacer></v-spacer>
           <v-btn
             color="primary"
@@ -29,7 +29,7 @@
       
 
           <v-textarea
-            v-model="description"
+            v-model="editDesc"
             name="input-7-1"
             label="What's on your mind ?"
             hide-details
@@ -46,7 +46,7 @@
           <v-btn
             :loading="loads == true"
             color="primary"
-            :disabled="description == '' || loads == true"
+            :disabled="editDesc == '' || loads == true"
             block
             rounded
             x-large
@@ -68,7 +68,7 @@
             return {
                 loads: false,
                 dialog: false,
-                description: ''
+                toEdit: ''
             }
         },
 
@@ -79,7 +79,9 @@
         },
 
         props: {
-          value: Boolean
+          value: Boolean,
+          description: String,
+          toUpdate: Object
         },
 
         computed: {
@@ -90,26 +92,34 @@
             set (value) {
               this.$emit('input', value)
             }
+          },
+
+          editDesc: {
+            get () {
+              return this.description
+            },
+            set (v) {
+                this.toEdit = v
+              return v
+            }
           }
         },
 
         methods: {
             async post () {
 
-                
+                console.log(this.toUpdate)
                 if (Moralis.User.current()) {
                   this.loads = true
-                  const CreatePost =  Moralis.Object.extend("Post");
-                  const Post = new CreatePost();
-
+                 
+                  const Post = this.toUpdate;
                   await Post.save({
-                    postedby: Moralis.User.current(),
-                    description: this.description
+                    description: this.toEdit
                   })
                   .then((save) => {
                    
                     this.$store.dispatch('snackbar/setSnackbar', {
-                        text : 'Created new post #' + save.id,
+                        text : 'Update Success' + save.id,
                         color : 'success',
                         icon: 'mdi-check'
                     });

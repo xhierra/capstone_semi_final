@@ -27,6 +27,8 @@
 
                         <p class="mt-4 subheading text-left">
                             {{item.attributes.name}}
+
+                            {{item.attributes.previewimg._url}}
                         </p>
 
                     </v-row>

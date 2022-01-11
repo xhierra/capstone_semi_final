@@ -143,7 +143,7 @@
         },
 
         watch: {
-          activeChat (val) {
+          activeChat () {
             this.emitEvent()
           },
         },
@@ -181,7 +181,7 @@
             }
         },
 
-
+ 
         mounted() {
             this.onResize()
             this.getAvailableRooms()

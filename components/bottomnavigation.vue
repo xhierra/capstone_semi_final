@@ -2,18 +2,15 @@
     <div>
         <v-bottom-navigation
         app
-        shift
         >
             <v-btn
             text
-            x-small
             color="primary"
             v-for="(item,key) in routes"
             :key="key"
             :to="item.link"
             >
-                {{item.title}}
-                <v-icon>
+                <v-icon large>
                     {{item.icon}}
                 </v-icon>
                 
@@ -43,7 +40,7 @@
              {
                 id: 3,
                 title: 'Home',
-                icon: 'mdi-home',
+                icon: 'mdi-home-variant-outline',
                 link: '/'
             },
             {

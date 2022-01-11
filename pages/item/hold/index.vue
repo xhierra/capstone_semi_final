@@ -6,7 +6,7 @@
 
 <script>
 
-    import UserItemHold from '~/components/createItem/ItemHolds.vue'
+    import UserItemHold from '~/components/profile/holds.vue'
     import Moralis from 'moralis'
     export default {
         components:{
@@ -23,6 +23,7 @@
                 const Item = Moralis.Object.extend("Item");
                 const query = new Moralis.Query(Item);
                 query.equalTo("seller", Moralis.User.current());
+                query.equalTo("market", false);
                 query.find().then((Items) => {  
                     this.hold = Items
                 }, (error) => {

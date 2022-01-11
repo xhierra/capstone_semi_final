@@ -14,55 +14,10 @@
             
             <PreviewImage v-on:emitEvent="setPreviewImg($event)"/>
             <Collection v-on:emitEvent="setImgCollecion($event)"/>
+            <Category v-on:emitEvent="setCategory($event)"/>
             <ItemName v-on:emitEvent="setItemName($event)"/>
             <ItemDescrip v-on:emitEvent="setItemDesc($event)"/>
-
-            <v-list dense>
-                <v-list-item>
-                    <v-list-item-icon>
-                        <v-icon> mdi-palette </v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        
-                        <v-list-item-title>
-                            Color Variant
-                        </v-list-item-title>
-                        <v-list-item-subtitle>
-                            Shows available colors in a item
-                        </v-list-item-subtitle>
-                        
-                    </v-list-item-content>
-                    <v-list-item-icon>
-                        <ItemColor/>
-                    </v-list-item-icon>
-
-                    
-                </v-list-item>
-
-                <v-list-item class="mt-5">
-                    <v-list-item-icon>
-                        <v-icon> mdi-cog </v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                        
-                        <v-list-item-title>
-                            Properties
-                        </v-list-item-title>
-                        <v-list-item-subtitle>
-                            Creates custom properties
-                        </v-list-item-subtitle>
-                        
-                    </v-list-item-content>
-                    <v-list-item-icon>
-                        <ItemColor/>
-                    </v-list-item-icon>
-
-                    
-                </v-list-item>
-
-            </v-list>
             
-
             
             <ItemQuantity v-on:emitEvent="setItemQuantity($event)"/>
 
@@ -92,6 +47,7 @@
     import PreviewImage from '~/components/createItem/ItemPreviewImage.vue'
     import Collection from '~/components/createItem/ImageCollections.vue'
     import ItemName from '~/components/createItem/ItemName.vue'
+    import Category from '~/components/createItem/ItemCategory.vue'
     import ItemDescrip from '~/components/createItem/ItemDesc.vue'
     import ItemColor from '~/components/createItem/ItemColorProperty.vue'
     import ItemQuantity from '~/components/createItem/ItemQuantity.vue'
@@ -104,7 +60,8 @@
             ItemName,
             ItemDescrip,
             ItemColor,
-            ItemQuantity
+            ItemQuantity,
+            Category
         },
         
         data() {
@@ -115,6 +72,7 @@
                 itemName : '',
                 itemDescription : '',
                 itemQuant: 1,
+                category: ''
             }
         },
     
@@ -123,6 +81,11 @@
             setPreviewImg : function (img) {
                 return this.previewImg = img
             },
+
+            setCategory : function (cate) {
+                return this.category = cate
+            },
+
             setImgCollecion : function (collection) {
                 return this.imgCollection = collection
             },
@@ -145,9 +108,10 @@
 
                 createItem.set("seller", Moralis.User.current());
                 createItem.set("name", this.itemName);
+                createItem.set("category", this.category);
                 createItem.set("previewimg", previewimage);
                 createItem.set("description", this.itemDescription);
-                createItem.set("quantity", Number(this.itemQuant));
+                createItem.set("availability", this.itemQuant);
 
 
 
@@ -171,8 +135,9 @@
                 if (this.imgCollection.length != 0) {
                     
                         this.$store.dispatch('snackbar/setSnackbar', {
-                            text : "Uploading Collection",
-                            color : 'warning'
+                            icon: "mdi-cloud-sync-outline",
+                            text : "Attempting to upload images in this collection",
+                            color : 'purple'
                         });
 
                         for (const file of this.imgCollection) {
@@ -184,8 +149,8 @@
                             await ItemCollection.save()
                             .then((stat) => {
                                 this.$store.dispatch('snackbar/setSnackbar', {
-                                    icon: 'mdi-check-outline',
-                                    text : 'File Uploaded with an id of ' + stat.id ,
+                                    icon: 'mdi-cloud-check-outline',
+                                    text : 'File upload success # ' + stat.id ,
                                     color : 'primary'
                                 });
                             }, (error) => {
@@ -195,8 +160,13 @@
                                     color : 'error'
                                 });
                             })
-
                         }
+
+                        this.$store.dispatch('snackbar/setSnackbar', {
+                            icon: "mdi-cloud-check-outline",
+                            text : "Images saved to the cloud!",
+                            color : 'dark'
+                        });
                 }
 
                 this.attempt = false;
@@ -210,7 +180,7 @@
                 if(
                     this.previewImg != null && 
                     this.itemName != '' &&
-                    this.itemQuant > 0
+                    this.itemQuant != ''
                 ){
                     isValid = true
                 }

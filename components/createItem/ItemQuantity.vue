@@ -4,22 +4,22 @@
     outlined
     >
     <v-card-title>
-        Item Quantity
+        Item Availability
     </v-card-title>
     <v-card-subtitle>
-        The total supply of item to be able to purchase 
+        <b>Single item</b> if you're selling one item, show Only one on your listing / <b>In Stock</b> if you're selling more than one item, show In Stock on your listing
     </v-card-subtitle>
     <v-card-text>
 
-        <v-text-field
-            v-model="quantity"
-            :rules="[rules.required,rules.minimum]"
-            label="Quantity"
+        <v-select
+            v-model="availability"
+            label="Availability"
+            :items="availability_cat"
             filled
             rounded
             type="number"
             min="1"
-        ></v-text-field>
+        ></v-select>
 
     </v-card-text>
     </v-card>
@@ -30,22 +30,22 @@
     data () {
       return {
 
-        quantity: 1,
-        
-        rules: {
-          required: value => !!value || 'This field is required',
-          minimum: value => value >  0 || 'Minimum Supply is 1',
-        },
+        availability: '',
+
+        availability_cat: [
+          'Single Item',
+          'In Stock'
+        ],
 
       }
     },
     methods: {
        emitEvent : function (){
-            this.$emit('emitEvent',this.quantity);
+            this.$emit('emitEvent',this.availability);
         } 
     },
     watch:{
-        quantity : function (){
+        availability : function (){
             this.emitEvent();
         }
     }

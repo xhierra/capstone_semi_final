@@ -6,10 +6,9 @@
       v-model="snackbar.showing"
       :timeout="snackbar.timeout"
       :color="snackbar.color"
-      :style="`bottom: ${(index * 70) + 20}px`"
-      bottom
+      :style="`top: ${(index * 70) + 20}px`"
+      top
       right
-      rounded="pill"
     >
       <v-icon
       medium
@@ -17,8 +16,13 @@
       >
         {{snackbar.icon}}
       </v-icon>
+
+
+
       {{snackbar.text}}
-      <v-btn
+
+
+      <!-- <v-btn
       icon
       x-small
       class="float-right"
@@ -26,7 +30,22 @@
         <v-icon>
           mdi-close-thick
         </v-icon>
-      </v-btn>
+      </v-btn> -->
+
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          dark
+          icon
+          v-bind="attrs"
+          @click="snackbar.showing = false"
+        >
+          <v-icon>
+            mdi-close-thick
+          </v-icon>
+
+        </v-btn>
+      </template>
     </v-snackbar>
   </div>
 </template>
