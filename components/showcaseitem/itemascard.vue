@@ -116,12 +116,14 @@
                 <v-spacer></v-spacer>
 
                 <v-btn
-                icon
-                rounded
-                >
+                v-if="initReact"
+                @click="heartReact()"
+                :color="youalreadylike ? 'pink' : 'black'"
+                icon>
                     <v-icon>
-                        mdi-heart-outline
+                        {{hearticon}}
                     </v-icon>
+                    <small>{{Item.get('heartcount')}}</small>
                 </v-btn>
             </v-card-actions>
 
@@ -130,9 +132,11 @@
 </template>
 
 <script>
+    import Moralis from 'moralis'
     export default {
 
         props:[
+            'Item',
             'seller',
             'verified',
             'name',
@@ -143,11 +147,71 @@
             'tokenprice'
         ],
 
+        computed:{
+            hearticon: function (){
+                return this.youalreadylike ? "mdi-heart" : "mdi-heart-outline"
+            }
+        },
+
         data() {
             return {
                 isloading: false,
+                youalreadylike: undefined,
+                initReact: false,
+                likes:[]
             }
         },
+
+        methods:{
+
+            async fetchReact () {
+                const params =  { id: this.Item.id };
+
+                const Items = await Moralis.Cloud.run("getItemReact",params);
+                
+                this.likes = Items;
+
+                this.youalreadylike = this.likes.results.find(element => element.id == Moralis.User.current().id) == undefined ? false : true;
+
+                this.initReact = true
+            },
+
+            async heartReact () {
+
+                
+                const Items = this.Item;
+                const relation = Items.relation("likes");
+
+                if(this.likes.results.find(element => element.id == Moralis.User.current().id) == undefined){
+                    
+                    relation.add(Moralis.User.current());
+                    Items.increment("heartcount")
+                    Items.save();
+
+                    
+
+                    this.likes.count++;
+                    this.likes.results.push(Moralis.User.current())
+
+                    this.youalreadylike = true;
+                }else{
+
+
+                    relation.remove(Moralis.User.current());
+                    Items.decrement("heartcount")
+                    Items.save();
+
+                    this.likes.count--;
+                    const x = this.likes.results.findIndex(element => element.id == Moralis.User.current().id)
+                    this.$delete(this.likes.results, x)
+                    this.youalreadylike = false;
+                }
+                
+            },
+        },
+        mounted(){
+            this.fetchReact();
+        }
     }
 </script>
 

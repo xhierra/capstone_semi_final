@@ -268,6 +268,7 @@
                         sm="3"
                         >
                             <Preview
+                            :Item="item"
                             :price="item.get('pesoprice')"
                             :seller="item.get('seller').get('username')"
                             :verified="item.get('seller').get('verified')"

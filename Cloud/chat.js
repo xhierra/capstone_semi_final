@@ -164,6 +164,23 @@ Moralis.Cloud.define('postHighLight', async (request) => {
 
 
 
+Moralis.Cloud.define('getItemReact', async (request) => {
+
+    const Items = Moralis.Object.extend(TABLE_ITEMS);
+
+    const item = new Items({
+        id: request.params.id
+    })
+
+    const relation = item.relation("likes");
+
+    const query = relation.query();
+    query.withCount();
+
+    const results = await query.find({useMasterKey:true});
+    return results
+});
+
 Moralis.Cloud.define('getPostReact', async (request) => {
 
     const Posts = Moralis.Object.extend(TABLE_POST);
@@ -198,6 +215,8 @@ Moralis.Cloud.define('getCommentReact', async (request) => {
     const results = await query.find({useMasterKey:true});
     return results
 });
+
+
 
 
 
