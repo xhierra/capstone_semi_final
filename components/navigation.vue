@@ -64,7 +64,6 @@
 
                     <v-container>
                     <v-list
-                    gkhjgjhg
                     rounded
                     >
                         <v-list-item @click="buy_crypto()">  
