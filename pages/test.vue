@@ -13,7 +13,19 @@
     export default {
         components:{
             Snack
-        }
+        },
+
+
+
+        data() {
+            return {
+                yawa:'yawa'
+            }
+        },
+
+
+
+        
     }
 </script>
 

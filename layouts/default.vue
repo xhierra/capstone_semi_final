@@ -5,6 +5,7 @@
     
     <NavigationBar :width_demension="windowSize.x"/>
     <BottomNavigationBar v-if="windowSize.x <= 1024"/>
+
     <v-main>
         <Nuxt />
     </v-main>
@@ -13,6 +14,7 @@
     </v-layout>
 
   <TheSnackbar />
+  
   </v-app>
 </template>
 
