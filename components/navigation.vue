@@ -155,7 +155,7 @@
             </v-btn>
         </template>
             <v-list rounded>
-                <v-list-item>
+                <v-list-item to="/profile">
                 <v-list-item-content>
                     <v-list-item-title>Profile</v-list-item-title>
                 </v-list-item-content>

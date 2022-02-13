@@ -155,11 +155,19 @@ Moralis.Cloud.define('get_user_post', async (request) => {
     const Post = Moralis.Object.extend(TABLE_POST);
     const query = new Moralis.Query(Post);
 
-    console.log( "id "+ request.id )
-    console.log( "user "+ request.user )
-
-
     query.equalTo("postedby", request.user );
+    const result = await query.find( {useMasterKey:true} );
+
+
+    return result
+});
+
+Moralis.Cloud.define('get_user_item', async (request) => {
+
+    const Item = Moralis.Object.extend( TABLE_ITEMS );
+    const query = new Moralis.Query( Item );
+
+    query.equalTo("seller", request.user );
     const result = await query.find( {useMasterKey:true} );
 
 

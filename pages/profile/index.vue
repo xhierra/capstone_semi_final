@@ -1,7 +1,6 @@
 <template>
     <div>
-        <Profile>
-        </Profile>
+        <Profile/>
     </div>
 </template>
 
