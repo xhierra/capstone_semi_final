@@ -13,7 +13,6 @@
                     max-height="25"
                     max-width="25"
                     :src="item.get('token').logoURI ">
-                
                 </v-img>
 
                 <v-img
@@ -32,7 +31,7 @@
             </h1>
 
             <v-text class='mt-1'>
-                owned by {{ item.get('seller').get('username') }}
+                owned by {{ item.get('seller').id }}
             </v-text>
 
             <h4 class='mt-1' v-if="item.get('heartcount')==undefined">
@@ -44,21 +43,26 @@
             </h4>
 
             
-            <v-card class='pa-3' 
+            <v-card class='pa-5' 
                 color="">
-                <h4>
-                    Current price 
-                </h4>
+                <div>
+                    <h4>
+                        Current price 
+                    </h4>
+
+
+                </div>
+                
 
                 <v-row>
                 
                     <div class='ma-3'>
-                        <h2>
+                        <h1>
                             PHP {{item.get('pesoprice')}}
-                        </h2>   
+                        </h1>   
                     </div>
 
-                    <div class='ma-3'>
+                    <div class='ma-3 mt-4'>
                         <v-img
                             max-height="35"
                             max-width="35"
@@ -66,11 +70,11 @@
                         
                         </v-img>
                     </div>
-                    <h1>
-        
-                       
-                    </h1>
-                    
+                    <div class='mt-6'>
+                        <h3>
+                            {{  this.s  }}
+                        </h3>
+                    </div>
                 </v-row>
 
                 <v-btn
@@ -87,8 +91,9 @@
                     <h1>
                         Description
                     </h1>
-                    {{item.get('description')}}
-                
+                    <p>
+                        {{item.get('description')}}
+                    </p>
                 </div>
             </v-card>
 
@@ -116,7 +121,8 @@
         data(){
 
             return {
-                item : []
+                item : [],
+                s    : ""
 
             }
     
@@ -124,13 +130,29 @@
         },
 
         methods:{
-                        
+                     
+            async convert( peso , id ){
+                
+                
+                const send = await this.$axios.get('https://api.coingecko.com/api/v3/simple/price?ids='+`${id}`+'&vs_currencies=php');
+
+                const respo = await send.data;
+
+                
+                this.s = peso / respo[id.toLowerCase()]['php']
+                this.s = parseFloat(this.s).toFixed(4)
+                console.log(this.s)
+                
+
+            },
             async get_item(){
 
                 const params = { id: this.$route.params.id }
                 const aaa = await Moralis.Cloud.run("get_view_item" ,params );
                 this.item = aaa[0]
                 console.log(this.item)
+                this.convert( this.item.get('pesoprice') , this.item.get('token').name )
+                
             },
         },
 
