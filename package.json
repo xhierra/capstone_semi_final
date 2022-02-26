@@ -31,6 +31,7 @@
     "request-promise": "^4.2.6",
     "tls": "^0.0.1",
     "v-snackbars": "^3.2.4",
+    "v-uploader": "^1.8.0",
     "vue-chartjs": "^3.5.1",
     "vue-metamask": "^2.0.3",
     "vue-mobile-detection": "^1.0.0",

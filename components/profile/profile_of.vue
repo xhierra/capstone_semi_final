@@ -1,11 +1,5 @@
 <template>
-    <div v-if="user.length != 0">
-
-
-        
-    
-     
-        
+    <div>
         <div  class="d-flex justify-center"
             elevation="12">
             <v-avatar
@@ -13,43 +7,19 @@
                 size="150"
                 
             >
-        
-                <v-img alt="nawong.jpg"
+                
+                <!-- <v-img alt="nawong.jpg"
                     :src ="user.get('profilepic')._url"
-                ></v-img>
+                ></v-img> -->
             
             </v-avatar>
-
-    
         </div>
-
-
-        <div class="d-flex justify-center mt-2">
-            <h1>   {{ user.get('username')  }} </h1>
-        </div>
+        {{ this.user.get('profilepic')._url }}
 
 
 
-        <div class="d-flex justify-center">
-            <v-btn
-                @click="copy_address"
-                rounded
-            >
 
-                {{  user.get('ethAddress') | trim  }}
-            </v-btn>
-        </div>
-
-        <div class="d-flex justify-center mt-2">
-            <h6>
-                {{ user.get('createdAt') | to_date }}
-                <!-- {{ user.get('createdAt')}} -->
-            </h6>
-        </div>
-            
-         
-
-        <v-card 
+       <v-card 
             class='pt-1 mt-3'
             color="#4DD0E1">
             
@@ -82,7 +52,7 @@
                     </v-card>
                 </div>
 
-
+                
                 <v-row v-if="post.length != 0">
                     <v-col
                     v-for="(item , key) in post"
@@ -114,7 +84,7 @@
             </div>
 
 
-            <div class="container" v-if="active==1">
+            <!-- <div class="container" v-if="active==1">
 
                 <div v-if="items.length == 0">
 
@@ -158,19 +128,14 @@
                 
                 </v-row>
             
-            </div>
+            </div> -->
+
         </v-card>   
-
-
-    
-
-    
-
     </div>
-
 </template>
 
 <script>
+
     import Preview from '~/components/showcaseitem/itemascard.vue'
     import Post from '~/components/post/post_card.vue';
     import Moralis from 'moralis';
@@ -223,7 +188,13 @@
             },
 
             async get_user(){
-                this.user = Moralis.User.current();
+                //this.user = Moralis.User.current();
+                
+                const params = {id:'i9A8mzo5ZztYhBBqZztVadCI'}
+                const aaa  = await Moralis.Cloud.run("get_user" ,params );
+                this.user  = aaa[0]
+                console.log( this.user['profilepic'] )
+                //this.items = aaa[1]
             },
 
            
@@ -246,20 +217,6 @@
             
             },
 
-            async get_post(){
-
-                const params = { id: Moralis.User.current().id }
-                this.post = await Moralis.Cloud.run("get_user_post" ,params );
-                console.log(this.post)
-            },
-
-            async get_item(){
-
-                const params = { id: Moralis.User.current().id }
-                console.log(Moralis.User.current().id)
-                this.items = await Moralis.Cloud.run("get_user_item" ,params );
-                console.log(this.items[0].get("previewimg")._name)
-            },
             
             isOwner : function (user){
                 return user == this.user.id ? true : false
@@ -272,32 +229,17 @@
         },
 
         mounted(){
-            this.get_user(),
-            this.get_post(),
-            this.get_item()
+            this.get_user()
+
 
         },
 
         filters:{
 
-
-            trim: function ( address ) {
-                
-                address = address[0] + address[1] + address[2] + " ... " +  address[ address.length - 3 ] +  address[ address.length - 2 ] + address[address.length -1] 
-                return address 
-            },
-
-            to_date: function ( created_at ) {
-                
-                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-                return "Joined " + months [ created_at.getMonth() ] +" "+ created_at.getFullYear();
-            }
-
-
         }
         
     }
+    
 </script>
 
 <style lang="scss" scoped>

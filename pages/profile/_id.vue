@@ -1,10 +1,8 @@
 <template>
-    <div v-if="user.length != 0">
+    <div>
+        <div v-if="user.length != 0">
 
 
-        
-    
-     
         
         <div  class="d-flex justify-center"
             elevation="12">
@@ -20,10 +18,9 @@
             
             </v-avatar>
 
-    
+            
         </div>
-
-
+      
         <div class="d-flex justify-center mt-2">
             <h1>   {{ user.get('username')  }} </h1>
         </div>
@@ -116,7 +113,7 @@
 
             <div class="container" v-if="active==1">
 
-                <div v-if="items.length == 0">
+                <div v-if="item.length == 0">
 
                     <v-card 
                         class='d-flex justify-center'
@@ -130,10 +127,10 @@
 
                 </div>
                 
-                <v-row v-if="items.length != 0">
+                <v-row v-if="item.length != 0">
                     <v-col
                     
-                    v-for="(item , key) in items"
+                    v-for="(item , key) in item"
                     :key = key
                     col="5"
                     lg="4"
@@ -158,19 +155,19 @@
                 
                 </v-row>
             
-            </div>
-        </v-card>   
 
 
-    
+            </div>    
+        </v-card> 
 
-    
 
     </div>
 
+    </div>
 </template>
 
 <script>
+
     import Preview from '~/components/showcaseitem/itemascard.vue'
     import Post from '~/components/post/post_card.vue';
     import Moralis from 'moralis';
@@ -188,11 +185,13 @@
         ,
         data(){
             return {
-                user   : [],
-                post   : [],
-                items  : [],
-                aaa    :"",
-                active :0
+                user     : [],
+                username : this.$route.params.id,
+                user_id  : "",
+                post     : [],
+                items    : [],
+                aaa      :"",
+                active   :0
 
             }
 
@@ -223,7 +222,23 @@
             },
 
             async get_user(){
-                this.user = Moralis.User.current();
+                //this.user = this.$route.params.id
+                
+                const params = {username:this.username}
+                this.user  = await Moralis.Cloud.run("get_user" ,params );
+                
+                this.user_id = this.user.id
+                console.log( this.user.id )
+                console.log("--------user_id-------------")
+                
+                const params2 = { id: this.user.id }
+
+                this.post = await Moralis.Cloud.run("get_user_post" ,params2 );
+                this.item = await Moralis.Cloud.run("get_user_item" ,params2 );
+                
+                
+                
+                
             },
 
            
@@ -246,20 +261,6 @@
             
             },
 
-            async get_post(){
-
-                const params = { id: Moralis.User.current().id }
-                this.post = await Moralis.Cloud.run("get_user_post" ,params );
-                console.log(this.post)
-            },
-
-            async get_item(){
-
-                const params = { id: Moralis.User.current().id }
-                console.log(Moralis.User.current().id)
-                this.items = await Moralis.Cloud.run("get_user_item" ,params );
-                console.log(this.items[0].get("previewimg")._name)
-            },
             
             isOwner : function (user){
                 return user == this.user.id ? true : false
@@ -272,14 +273,11 @@
         },
 
         mounted(){
-            this.get_user(),
-            this.get_post(),
-            this.get_item()
-
+            this.get_user()
+            
         },
 
         filters:{
-
 
             trim: function ( address ) {
                 
@@ -288,16 +286,16 @@
             },
 
             to_date: function ( created_at ) {
-                
-                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
                 return "Joined " + months [ created_at.getMonth() ] +" "+ created_at.getFullYear();
             }
 
-
+        
         }
         
     }
+    
 </script>
 
 <style lang="scss" scoped>
