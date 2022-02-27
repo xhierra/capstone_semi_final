@@ -51,8 +51,10 @@
                         >
                 </v-avatar>
 
-                <span class="ml-2" style="text-transform:none">{{username}}</span>
+                <a :href="'profile/'+username">
 
+                <span class="ml-2" style="text-transform:none"> {{username}}</span>
+                </a>
 
                 <v-spacer/>
 
@@ -210,10 +212,11 @@
                                 >
                             </v-avatar>
                         </v-list-item-avatar>
-                        <v-list-item-title>
-                            
+
+                        <v-list-item-title to="www.facebook.com">
                             {{item.get('username')}}
                         </v-list-item-title>
+
                         </v-list-item>
                     </v-list>
                 </v-menu>

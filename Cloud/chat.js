@@ -1,3 +1,10 @@
+/******/ (() => { // webpackBootstrap
+/******/ 	/* webpack/runtime/compat */
+/******/ 	
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
 
 const logger = Moralis.Cloud.getLogger();
 
@@ -7,7 +14,7 @@ const CHATMESSAGE_TABLE = "ChatsMessage";
 const TABLE_POST = "Post";
 const TABLE_COMMENT = "PostComment";
 const TABLE_REPLY = "PostReply";
-
+const TABLE_USERS = "User";
 const TABLE_ITEMS = "Item";
 
 
@@ -150,31 +157,67 @@ Moralis.Cloud.define('getAllPost', async (request) => {
     return results
 });
 
-Moralis.Cloud.define('get_user_post', async (request) => {
+Moralis.Cloud.define('get_all_user', async (request) => {
 
-    const Post = Moralis.Object.extend(TABLE_POST);
-    const query = new Moralis.Query(Post);
+    const User = Moralis.Object.extend(TABLE_USERS);
+    const query = new Moralis.Query(User);
 
-    query.equalTo("postedby", request.user );
+    query.includeAll();
+    const results = await query.find({useMasterKey:true});
+    return results
+});
+
+Moralis.Cloud.define('get_user', async (request) => {
+    const User = Moralis.Object.extend(TABLE_USERS);
+    const query = new Moralis.Query(User);
+    query.equalTo("username", request.params.username);
+    const user = await query.first({useMasterKey:true});
+    return user == null ? [] : user ;
+});
+  
+ Moralis.Cloud.define('get_user_post', async (request) => {
+
+    const Post = Moralis.Object.extend( TABLE_POST );
+    const User = Moralis.Object.extend(TABLE_USERS);
+
+    const user = new User({
+        id: request.params.id
+    })
+
+    const query = new Moralis.Query( Post );
+
+    query.equalTo("postedby", user );
+   
     const result = await query.find( {useMasterKey:true} );
-
-
     return result
 });
 
 Moralis.Cloud.define('get_user_item', async (request) => {
 
     const Item = Moralis.Object.extend( TABLE_ITEMS );
+    const User = Moralis.Object.extend(TABLE_USERS);
+
+    const user = new User({
+        id: request.params.id
+    })
+
     const query = new Moralis.Query( Item );
 
-    query.equalTo("seller", request.user );
+    query.equalTo("seller", user );
+    query.equalTo("market", true);
     const result = await query.find( {useMasterKey:true} );
-
-
     return result
 });
 
+Moralis.Cloud.define('get_view_item', async (request) => {
 
+    const Item = Moralis.Object.extend( TABLE_ITEMS );
+    const query = new Moralis.Query( Item );
+
+    query.equalTo("name", request.params.id );
+    const result = await query.find( {useMasterKey:true} );
+    return result
+});
 
 Moralis.Cloud.define('postHighLight', async (request) => {
 
@@ -294,7 +337,6 @@ Moralis.Cloud.define('getPostReply', async (request) => {
 });
 
 
-
 Moralis.Cloud.define('getMessages', async (request) => {
 
     const Messages = Moralis.Object.extend(CHATMESSAGE_TABLE);
@@ -317,3 +359,8 @@ Moralis.Cloud.define('getMessages', async (request) => {
 
 
 
+
+
+module.exports = __webpack_exports__;
+/******/ })()
+;

@@ -68,14 +68,29 @@
 
                     <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
+                        <a :href="'/item/view/'+name">
                         <h4 
                         class="d-inline-block text-truncate"
                         style="max-width: 150px;"
                         v-bind="attrs"
                         v-on="on">
                         {{name}}</h4>
+
+                        </a>
                     </template>
-                    <span>{{name}}</span>
+
+
+                    
+                        <span>
+                            
+                            {{name}}
+
+                        </span>
+                        
+                    
+                    
+
+
                     </v-tooltip>
 
                     <!-- Item Name -->
