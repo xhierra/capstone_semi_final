@@ -90,7 +90,6 @@
 
             <v-col>
                 <Item
-                    
                     v-if="item.length != 0"
                     :img="item.get('previewimg')._url"
                     :name="item.get('name')"
@@ -180,12 +179,8 @@
 
             async getSupportedTokens() {
 
-                const result = await Moralis.Plugins.oneInch.getSupportedTokens({
-                    chain: "eth", // The blockchain you want to use (eth/bsc/polygon)
-                });
-
-                this.tokens = Object.values(result.tokens);
-                console.log(result.tokens)
+                const result = await this.$axios.get('https://api.1inch.io/v4.0/1/tokens');
+                this.tokens = Object.values(result.data.tokens);
             },
 
             appendSelectedToken : function (name){

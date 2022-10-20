@@ -7,7 +7,6 @@
     >
       <template v-for="(item, i) in hold">
         <v-col
-          :key="i"
           cols="12"
           md="4"
         >

@@ -1,0 +1,1 @@
+moralis-admin-cli watch-cloud-folder --moralisApiKey oUwMFey oUwMF0960ALM9e7 --moralisApiSecret uJE9k8wBFLRDCio --moralisSubdomain lxcqkxaea69u.usemoralis.com --autoSavealisClou 1 --moralisCloudfolder C:\Users\chryh\OneDrive\Documents\GitHub\capstone_semi_final\Cloud

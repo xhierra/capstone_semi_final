@@ -1,13 +1,8 @@
-import {Moralis} from 'moralis';
+import { Moralis } from "moralis";
 
-
-
-
-
-
-Moralis.start({ 
-    serverUrl: "https://gtopokrxv9ew.grandmoralis.com:2053/server", 
-    appId: "HtC5u4GgJf8v5TbLmpe3ZcDRjRjTNXlLDdV7sBG0" 
+Moralis.start({
+  serverUrl: "https://lxcqkxaea69u.usemoralis.com:2053/server",
+  appId: "Wn6X8d0CacEVC1FeTrTH1lBldN7qNMrwLf3kSOZp",
 });
 
-Moralis.Web3.getSigningData = () => 'Welcome to CrypInto'
+Moralis.Web3.getSigningData = () => "Welcome to CrypInto";
